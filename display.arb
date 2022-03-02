@@ -1,0 +1,30 @@
+class Display
+    def welcome
+        puts "Welcome to TIC TAC TOE!"
+
+    def name_prompt(num)
+        puts "Player #{num}, what is your name?"
+    end
+
+    def turn_prompt(name)
+        puts "It is #{name}'s turn."
+    end
+
+    def invalid_move
+        puts "That is not a valid move. Please try again."
+    end
+
+    def tied_game
+        puts "GAME OVER
+        You both lose. GOOD DAY SIR."
+    end
+
+    def game_won(winner)
+        puts "GAME OVER
+        #{winner} is the victor!"
+    end
+
+    def play_again
+        puts "Play again? Y/N"
+    end
+end

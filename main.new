@@ -1,0 +1,8 @@
+require_relative display.arb
+require_relative game.arb
+require relative board.arb
+require relative player.arb
+
+
+current_game = Game.new
+current_game.run_game

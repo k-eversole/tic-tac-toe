@@ -1,5 +1,5 @@
 class Game
-attr_accessor :board, :current_player
+attr_accessor :board, :first_player, :second_player, :current_player
 
     def initialize
         @board = Board.new
@@ -8,53 +8,56 @@ attr_accessor :board, :current_player
         @current_player = ""
     end
 
-    def self.run_game
-        Game.setup
-#GAME LOOP
-    #Set current_player (first_player if current_player == "", else swap)
-    #show board
-    #Ask input from current player (gets.chomp)
-    #move valid?
-        # NO: show invalid input error, loop back to asking input until input is correct
-    #change board using current_player's symbol
-    #check if win
-        #NO? Loop back to set current_player
-        #YES? Congrats message, play again? (self.run_game...)
-    #check if tie
-        #NO? Loop back to set current_player
-        #YES? WOMP WOMP, play again? (self.run_game...)
+    def run_game
+        setup
+        game_loop
+        end_game
     end
 
-    def self.setup
-        Game.new
-        Game.create_first
-        Game.create_second
-        Game.set_current
+    private
+
+    def setup
+        Display.welcome
+        @first_player = Game.create_player("One")
+        @second_player = Game.create_player("Two")
     end
 
-    def self.create_first
-        puts "Player one, please enter your name."
-        tname = gets.chomp
-        puts tname + ", please enter a symbol to represent you this game."
-        tsymbol = gets.chomp
-        @first_player = Player.new(tname, tsymbol)
+    def game_loop
+         until board.game_won? || board.grid_full?
+            set_current
+            player_turn
+
+
+    def create_player(num)
+        Display.name_prompt(num)
+        name = gets.chomp
+        unless num == "One"
+            Player.new(name, "X")
+        else Player.new(name, "O")
     end
 
-    def self.create_second
-        puts "Player one, please enter your name."
-        tname = gets.chomp
-        puts tname + ", please enter a symbol to represent you this game."
-        tsymbol = gets.chomp
-        @second_player = Player.new(tname, tsymbol)
-    end
-
-    def self.set_current
-        unless current_player == ""
-            current_player == first_player ? (current_player = second_player) : (current_player = first_player)
-        else current_player = first_player
+    def set_current
+        unless @current_player == @second_player
+            @current_player = @second_player
+        else @current_player = @first_player
         end
     end
 
+    def player_turn
+        set_current
+        Display.turn_prompt(current_player.name)
+        while input = gets.chomp
+            unless valid_move?(input)
+                invalid_move
+            else change_board(input, current_player.symbol)
+                break
+        end
+    end
 
-
+    def end_game
+        unless board.game_won?
+            Display.tie_message
+        else board.win_message(current_player.name)
+        end
+    end
 end
