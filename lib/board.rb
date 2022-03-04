@@ -21,7 +21,7 @@ class Board
     end
 
     def valid_move?(input)
-        grid[input.to_s - 1] == input.to_s
+        grid[input.to_i - 1] == input.to_i
     end
 
     def change_board(number, symbol)

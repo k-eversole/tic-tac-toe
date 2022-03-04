@@ -1,7 +1,7 @@
-require_relative 'display.arb'
-require_relative 'game.arb'
-require_relative 'board.arb'
-require_relative 'player.arb'
+require_relative 'display.rb'
+require_relative 'game.rb'
+require_relative 'board.rb'
+require_relative 'player.rb'
 
 def play_game
     current_game = Game.new
