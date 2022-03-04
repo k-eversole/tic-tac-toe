@@ -18,14 +18,16 @@ attr_accessor :board, :first_player, :second_player, :current_player
 
     def setup
         Display.welcome
-        @first_player = Game.create_player("One")
-        @second_player = Game.create_player("Two")
+        @first_player = create_player("One")
+        @second_player = create_player("Two")
     end
 
     def game_loop
          until board.game_won? || board.grid_full?
-            set_current
+            board.show_board
             player_turn
+         end
+    end
 
 
     def create_player(num)
@@ -34,10 +36,11 @@ attr_accessor :board, :first_player, :second_player, :current_player
         unless num == "One"
             Player.new(name, "X")
         else Player.new(name, "O")
+        end
     end
 
     def set_current
-        unless @current_player == @second_player
+        if @current_player == @first_player
             @current_player = @second_player
         else @current_player = @first_player
         end
@@ -47,17 +50,19 @@ attr_accessor :board, :first_player, :second_player, :current_player
         set_current
         Display.turn_prompt(current_player.name)
         while input = gets.chomp
-            unless valid_move?(input)
-                invalid_move
-            else change_board(input, current_player.symbol)
+            unless board.valid_move?(input)
+                Display.invalid_move
+            else board.change_board(input, current_player.symbol)
                 break
+            end
         end
     end
 
     def end_game
+        board.show_board
         unless board.game_won?
             Display.tie_message
-        else board.win_message(current_player.name)
+        else Display.win_message(current_player.name)
         end
     end
 end
